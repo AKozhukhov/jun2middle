@@ -1,0 +1,12 @@
+package ru.itone.jun2middle.shop.model.dto.order;
+
+import lombok.Builder;
+import lombok.Value;
+import java.util.UUID;
+
+@Value
+@Builder
+public class OrderDto {
+    UUID product_id;
+    UUID user_id;
+}

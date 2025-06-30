@@ -18,11 +18,7 @@ public class OrderController {
 
     @PostMapping
     public CreatedOrderDto reserveOrder(@RequestBody OrderDto orderDto) {
-
-        System.out.println("RRRRRRRRRRRRRRR " + orderDto.getShopOrderId());
-        System.out.println("RRRRRRRRRRRRRRR " + orderDto.getProductId());
-
-        return orderFacade.reserveOrder(orderDto);
+      return orderFacade.reserveOrder(orderDto);
     }
 
 }

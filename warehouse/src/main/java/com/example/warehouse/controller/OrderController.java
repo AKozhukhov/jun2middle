@@ -4,9 +4,11 @@ import com.example.warehouse.facade.OrderFacade;
 import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +20,12 @@ public class OrderController {
 
     @PostMapping
     public CreatedOrderDto reserveOrder(@RequestBody OrderDto orderDto) {
-      return orderFacade.reserveOrder(orderDto);
+        return orderFacade.reserveOrder(orderDto);
+    }
+
+    @DeleteMapping
+    public CreatedOrderDto orderToDeliver(@RequestParam String shopOrderId) {
+        return orderFacade.orderToDeliver(shopOrderId);
     }
 
 }

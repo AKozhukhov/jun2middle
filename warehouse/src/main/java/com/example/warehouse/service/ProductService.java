@@ -1,6 +1,5 @@
 package com.example.warehouse.service;
 
-import com.example.warehouse.model.dto.CreatedProductDto;
 import com.example.warehouse.model.entity.Product;
 import com.example.warehouse.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +18,10 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public Optional<Product> findById(UUID productId) {
+        return productRepository.findById(productId);
     }
 
     @Transactional

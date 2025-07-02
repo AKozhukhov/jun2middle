@@ -1,5 +1,6 @@
 package com.example.warehouse.model.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +25,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private UUID shop_order_id;
+    @Column(name="shop_order_id")
+    private UUID shopOrderId;
 
-    private UUID product_id;
+    @Column(name="product_id")
+    private UUID productId;
 
 }

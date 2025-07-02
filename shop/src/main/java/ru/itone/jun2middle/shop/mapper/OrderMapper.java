@@ -1,15 +1,25 @@
 package ru.itone.jun2middle.shop.mapper;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itone.jun2middle.shop.model.dto.order.CreatedOrderDto;
+import ru.itone.jun2middle.shop.model.dto.order.DeliveryOrderRequest;
 import ru.itone.jun2middle.shop.model.dto.order.OrderDto;
+import ru.itone.jun2middle.shop.model.dto.order.ReserveOrderRequest;
 import ru.itone.jun2middle.shop.model.entity.Order;
+import ru.itone.jun2middle.shop.model.entity.User;
+import ru.itone.jun2middle.shop.service.ProductService;
+import ru.itone.jun2middle.shop.service.UserService;
 
 /**
  * Класс для преобразования Entity и DTO Order
  */
 @Service
+@RequiredArgsConstructor
 public class OrderMapper {
+
+    private final ProductService productService;
+    private final UserService userService;
 
     /**
      * Преобразование OrderDto в Order
@@ -20,8 +30,8 @@ public class OrderMapper {
     public Order toEntity(OrderDto orderDto) {
         return new Order(
                 null,
-                orderDto.getProduct_id(),
-                orderDto.getUser_id());
+                orderDto.getProductId(),
+                orderDto.getUserId());
     }
 
     /**
@@ -33,8 +43,37 @@ public class OrderMapper {
     public CreatedOrderDto toCreatedDto(Order order) {
         return CreatedOrderDto.builder()
                 .id(order.getId())
-                .product_id(order.getProduct_id())
-                .user_id(order.getUser_id())
+                .productId(order.getProductId())
+                .userId(order.getUserId())
+                .build();
+    }
+
+    /**
+     * Формирование ReserveOrderRequest из Order
+     *
+     * @param order Order (Entity)
+     * @return Объект ReserveOrderRequest
+     */
+    public ReserveOrderRequest toReserveOrderRequest(Order order) {
+        return ReserveOrderRequest.builder()
+                .shopOrderId(order.getId().toString())
+                .productId(order.getProductId().toString())
+                .build();
+    }
+
+    /**
+     * Формирование DeliveryOrderRequest из Order
+     *
+     * @param order Order (Entity)
+     * @return Объект DeliveryOrderRequest
+     */
+    public DeliveryOrderRequest toDeliveryOrderRequest(Order order) {
+        User user = userService.getUserById(order.getUserId());
+        return DeliveryOrderRequest.builder()
+                .shopOrderId(order.getId())
+                .size(productService.getSizeById(order.getProductId()))
+                .locationX(user.getLocationX())
+                .locationY(user.getLocationY())
                 .build();
     }
 }

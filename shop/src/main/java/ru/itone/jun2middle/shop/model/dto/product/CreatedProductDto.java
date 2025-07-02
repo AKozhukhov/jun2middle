@@ -8,7 +8,7 @@ import java.util.UUID;
 @Builder
 public class CreatedProductDto {
     UUID id;
-    UUID warehouse_id;
+    UUID warehouseId;
     String name;
     int size;
 }

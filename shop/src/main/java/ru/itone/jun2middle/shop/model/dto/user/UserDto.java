@@ -8,6 +8,6 @@ import lombok.Value;
 public class UserDto {
     String fio;
     String email;
-    int location_x;
-    int location_y;
+    int locationX;
+    int locationY;
 }

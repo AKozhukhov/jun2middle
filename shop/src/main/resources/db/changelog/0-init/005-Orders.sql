@@ -1,6 +1,6 @@
-create table if not exists shop.orders
+CREATE TABLE IF NOT EXISTS shop.orders
 (
-    id uuid primary key,
-    product_id uuid references shop.products (id) on update cascade on delete set null,
-    user_id uuid references shop.users (id) on update cascade on delete set null
+    id UUID PRIMARY KEY,
+    product_id UUID REFERENCES shop.products (id) ON UPDATE CASCADE ON DELETE SET NULL,
+    user_id UUID REFERENCES shop.users (id) ON UPDATE CASCADE ON DELETE SET NULL
 )

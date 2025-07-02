@@ -26,8 +26,8 @@ public class User {
     private String email;
 
     @Column(name="location_x")
-    private int location_x;
+    private int locationX;
 
     @Column(name="location_y")
-    private int location_y;
+    private int locationY;
 }

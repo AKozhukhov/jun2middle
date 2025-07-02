@@ -21,7 +21,7 @@ public class Product {
     private UUID id;
 
     @Column(name="warehouse_id")
-    private UUID warehouse_id;
+    private UUID warehouseId;
 
     @Column(name="name")
     private String name;

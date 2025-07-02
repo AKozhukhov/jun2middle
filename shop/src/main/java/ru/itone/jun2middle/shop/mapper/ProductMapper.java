@@ -20,7 +20,7 @@ public class ProductMapper {
     public Product toEntity(ProductDto productDto) {
         return new Product(
                 null,
-                productDto.getWarehouse_id(),
+                productDto.getWarehouseId(),
                 productDto.getName(),
                 productDto.getSize());
     }
@@ -34,7 +34,7 @@ public class ProductMapper {
     public CreatedProductDto toCreatedDto(Product product) {
         return CreatedProductDto.builder()
                 .id(product.getId())
-                .warehouse_id(product.getWarehouse_id())
+                .warehouseId(product.getWarehouseId())
                 .name(product.getName())
                 .size(product.getSize())
                 .build();

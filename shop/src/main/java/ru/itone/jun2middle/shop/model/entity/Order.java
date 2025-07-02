@@ -3,15 +3,12 @@ package ru.itone.jun2middle.shop.model.entity;
 import jakarta.persistence.*;
 import java.util.UUID;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="orders")
 public class Order {
@@ -21,8 +18,8 @@ public class Order {
     private UUID id;
 
     @Column(name="product_id")
-    private UUID product_id;
+    private UUID productId;
 
     @Column(name="user_id")
-    private UUID user_id;
+    private UUID userId;
 }

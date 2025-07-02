@@ -1,4 +1,4 @@
-package ru.itone.jun2middle.shop.model.dto.user;
+package ru.itone.jun2middle.shop.model.dto.order;
 
 import lombok.Builder;
 import lombok.Value;
@@ -7,10 +7,9 @@ import java.util.UUID;
 
 @Value
 @Builder
-public class CreatedUserDto {
-    UUID id;
-    String fio;
-    String email;
+public class DeliveryOrderRequest {
+    UUID shopOrderId;
+    int size;
     int locationX;
     int locationY;
 }

@@ -7,6 +7,6 @@ import java.util.UUID;
 @Value
 @Builder
 public class OrderDto {
-    UUID product_id;
-    UUID user_id;
+    UUID productId;
+    UUID userId;
 }

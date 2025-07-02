@@ -19,11 +19,22 @@ public class ProductController {
 
     private final ProductFacade productFacade;
 
+    /**
+     * Список всех продуктоа на складе
+     * @return List<CreatedProductDto>
+     */
     @GetMapping
     public List<CreatedProductDto> findAllProducts() {
         return productFacade.findAll();
     }
 
+    /**
+     * Создание продукта (сохранение в БД)
+     * Если товар с таким названием уже есть на складе -
+     * увеличить его количество
+     * @param productDto с полями (name, size, count)
+     * @return CreatedProductDto
+     */
     @PostMapping
     public CreatedProductDto addProduct(@RequestBody ProductDto productDto) {
         return productFacade.add(productDto);

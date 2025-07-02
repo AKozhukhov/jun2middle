@@ -1,5 +1,6 @@
 package com.example.warehouse.facade;
 
+import com.example.warehouse.exception.OrderException;
 import com.example.warehouse.mapper.OrderMapper;
 import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
@@ -26,19 +27,23 @@ public class OrderFacade {
 
     @Transactional
     public CreatedOrderDto reserveOrder(OrderDto orderDto) {
-
         Optional<Product> optionalProduct = productService.findById(UUID.fromString(orderDto.getProductId()));
         if (optionalProduct.isEmpty()) {
-            throw new RuntimeException("Unknown product");
+            throw new OrderException("Unknown product");
         }
         Product product = optionalProduct.get();
         if (product.getCount() == 0) {
-            throw new RuntimeException("The product is out of stock");
+            throw new OrderException("The product is out of stock");
         }
         product.setCount(product.getCount() - 1);
 
         Order order = orderMapper.dtoOrderToOrder(orderDto);
         Order saved = orderService.saveOrder(order);
         return orderMapper.orderToCreatedOrderDto(saved);
+    }
+
+    public CreatedOrderDto orderToDeliver(String shopOrderId) {
+        Order delivered = orderService.orderToDeliver(UUID.fromString(shopOrderId));
+        return orderMapper.orderToCreatedOrderDto(delivered);
     }
 }

@@ -1,8 +1,8 @@
-create table if not exists shop.users
+CREATE TABLE IF NOT EXISTS shop.users
 (
-    id uuid primary key,
-    fio varchar(255) unique,
-    email varchar(255),
-    location_x int,
-    location_y int
+    id UUID PRIMARY KEY,
+    fio VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255),
+    location_x INT NOT NULL,
+    location_y INT NOT NULL
 )

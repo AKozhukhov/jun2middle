@@ -7,7 +7,7 @@ import java.util.UUID;
 @Value
 @Builder
 public class ProductDto {
-    UUID warehouse_id;
+    UUID warehouseId;
     String name;
     int size;
 }

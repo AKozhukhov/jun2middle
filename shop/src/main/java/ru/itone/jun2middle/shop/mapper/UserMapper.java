@@ -22,8 +22,8 @@ public class UserMapper {
                 null,
                 userDto.getFio(),
                 userDto.getEmail(),
-                userDto.getLocation_x(),
-                userDto.getLocation_y());
+                userDto.getLocationX(),
+                userDto.getLocationY());
     }
 
     /**
@@ -37,8 +37,8 @@ public class UserMapper {
                 .id(user.getId())
                 .fio(user.getFio())
                 .email(user.getEmail())
-                .location_x(user.getLocation_x())
-                .location_y(user.getLocation_y())
+                .locationX(user.getLocationX())
+                .locationY(user.getLocationY())
                 .build();
     }
 }

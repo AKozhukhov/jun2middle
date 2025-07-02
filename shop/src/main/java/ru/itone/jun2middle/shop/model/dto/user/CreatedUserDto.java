@@ -11,6 +11,6 @@ public class CreatedUserDto {
     UUID id;
     String fio;
     String email;
-    int location_x;
-    int location_y;
+    int locationX;
+    int locationY;
 }

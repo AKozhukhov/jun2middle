@@ -18,8 +18,8 @@ public class Order {
     private UUID id;
 
     @Column(name="product_id")
-    private UUID product_id;
+    private UUID productId;
 
     @Column(name="user_id")
-    private UUID user_id;
+    private UUID userId;
 }

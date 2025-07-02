@@ -9,6 +9,6 @@ import java.util.UUID;
 @Builder
 public class CreatedOrderDto {
     UUID id;
-    UUID product_id;
-    UUID user_id;
+    UUID productId;
+    UUID userId;
 }

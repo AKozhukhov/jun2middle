@@ -18,14 +18,14 @@ public class OrderService {
 
     @Transactional
     public Order create(Order order) throws RuntimeException {
-        if (order.getProduct_id()==null) {
+        if (order.getProductId()==null) {
             throw new RuntimeException("product_id не должен быть пустым");
-        } else if (!productRepository.existsById(order.getProduct_id())) {
+        } else if (!productRepository.existsById(order.getProductId())) {
             throw new RuntimeException("Продукта с указанным product_id не существует");
         }
-        if (order.getUser_id()==null) {
+        if (order.getUserId()==null) {
             throw new RuntimeException("user_id не должен быть пустым");
-        } else if (!userRepository.existsById(order.getUser_id())) {
+        } else if (!userRepository.existsById(order.getUserId())) {
             throw new RuntimeException("Пользователь с указанным user_id не существует");
         }
         return orderRepository.save(order);

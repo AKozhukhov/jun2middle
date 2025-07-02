@@ -8,8 +8,8 @@ import java.util.UUID;
 @Value
 @Builder
 public class DeliveryOrderRequest {
-    UUID shop_order_id;
+    UUID shopOrderId;
     int size;
-    int location_x;
-    int location_y;
+    int locationX;
+    int locationY;
 }

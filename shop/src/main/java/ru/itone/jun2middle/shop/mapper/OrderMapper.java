@@ -30,8 +30,8 @@ public class OrderMapper {
     public Order toEntity(OrderDto orderDto) {
         return new Order(
                 null,
-                orderDto.getProduct_id(),
-                orderDto.getUser_id());
+                orderDto.getProductId(),
+                orderDto.getUserId());
     }
 
     /**
@@ -43,8 +43,8 @@ public class OrderMapper {
     public CreatedOrderDto toCreatedDto(Order order) {
         return CreatedOrderDto.builder()
                 .id(order.getId())
-                .product_id(order.getProduct_id())
-                .user_id(order.getUser_id())
+                .productId(order.getProductId())
+                .userId(order.getUserId())
                 .build();
     }
 
@@ -56,8 +56,8 @@ public class OrderMapper {
      */
     public ReserveOrderRequest toReserveOrderRequest(Order order) {
         return ReserveOrderRequest.builder()
-                .shop_order_id(order.getId().toString())
-                .product_id(order.getProduct_id().toString())
+                .shopOrderId(order.getId().toString())
+                .productId(order.getProductId().toString())
                 .build();
     }
 
@@ -68,12 +68,12 @@ public class OrderMapper {
      * @return Объект DeliveryOrderRequest
      */
     public DeliveryOrderRequest toDeliveryOrderRequest(Order order) {
-        User user = userService.getUserById(order.getUser_id());
+        User user = userService.getUserById(order.getUserId());
         return DeliveryOrderRequest.builder()
-                .shop_order_id(order.getId())
-                .size(productService.getSizeById(order.getProduct_id()))
-                .location_x(user.getLocation_x())
-                .location_y(user.getLocation_y())
+                .shopOrderId(order.getId())
+                .size(productService.getSizeById(order.getProductId()))
+                .locationX(user.getLocationX())
+                .locationY(user.getLocationY())
                 .build();
     }
 }

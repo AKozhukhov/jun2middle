@@ -14,13 +14,14 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(User user){
-        User existingUser = userRepository.findByFio(user.getFio());
-        if (existingUser==null) {
+        Optional<User> optionalUser = userRepository.findByFio(user.getFio());
+        if (optionalUser.isEmpty()) {
             return userRepository.save(user);
         } else {
+            User existingUser = optionalUser.get();
             existingUser.setEmail(user.getEmail());
-            existingUser.setLocation_x(user.getLocation_x());
-            existingUser.setLocation_y(user.getLocation_y());
+            existingUser.setLocationX(user.getLocationX());
+            existingUser.setLocationY(user.getLocationY());
             return userRepository.save(existingUser);
         }
     }

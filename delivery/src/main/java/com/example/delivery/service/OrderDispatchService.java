@@ -4,7 +4,9 @@ package com.example.delivery.service;
 import com.example.delivery.entity.Courier;
 import com.example.delivery.entity.Order;
 import com.example.delivery.entity.enums.OrderStatus;
+import com.example.delivery.exception.InvalidCoordinatesException;
 import com.example.delivery.repository.OrderRepository;
+import com.example.delivery.utils.OrderCoordinateValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,6 +28,7 @@ public class OrderDispatchService {
 
     private final OrderRepository orderRepository;
     private final CourierService courierService;
+    private final OrderCoordinateValidator orderCoordinateValidator;
 
     @Scheduled(fixedRate = 10000)
     @Transactional
@@ -64,14 +67,21 @@ public class OrderDispatchService {
     private void processOrders(List<Order> orders, Map<Integer, List<Courier>> capacityMap) {
         for (Order order : orders) {
             try {
+                var distance =orderCoordinateValidator.validateAndCalculateDistance(order.getLocationX(),order.getLocationY());
                 if (capacityMap.isEmpty()) {
                     log.debug("Все курьеры заняты, прерывание обработки");
                     break;
                 }
                 Optional<Courier> courierOpt = findSuitableCourier(order, capacityMap);
-                courierOpt.ifPresentOrElse(courier -> assignOrder(order, courier, capacityMap),
+                courierOpt.ifPresentOrElse(courier -> assignOrder(order, courier, capacityMap,distance),
                         ()->log.debug("Нет курьера на заказ {} размером {}",order.getId(),order.getSize()));
-            } catch (Exception e) {
+            }catch (InvalidCoordinatesException e){
+                order.setStatus(OrderStatus.ERROR);
+                orderRepository.save(order);
+                log.error("Координаты заказа {} вне зоны доставки: {}",
+                        order.getId(), e.getMessage());
+            }
+            catch (Exception e) {
                 log.error("Ошибка при обработке заказа {}", order.getId(), e);
             }
         }
@@ -92,17 +102,19 @@ public class OrderDispatchService {
         return Optional.empty();
     }
 
-    private void assignOrder(Order order, Courier courier, Map<Integer, List<Courier>> capacityMap) {
+    private void assignOrder(Order order, Courier courier, Map<Integer, List<Courier>> capacityMap, int distance) {
         int capacity = courier.getTransport().getCapacity();
-        var secToDelivery=3*60;
+        var deliverySeconds = (int) Math.ceil((double) distance / courier.getTransport().getSpeed());
 
         removeCourierFromMap(capacityMap, capacity, courier);
-        courierService.assignOrderToCourier(courier,secToDelivery);
+        courierService.assignOrderToCourier(courier,deliverySeconds);
         order.setStatus(OrderStatus.DELIVERY);
         order.setCourier(courier);
-        order.setArrivalTime(LocalDateTime.now().plusSeconds(secToDelivery));;
+        order.setArrivalTime(LocalDateTime.now().plusSeconds(deliverySeconds));
         orderRepository.save(order);
 
+        log.info("curierId={}, transport={}, time={}s",
+                courier.getId(), courier.getTransport(), deliverySeconds);
         log.info("Заказ {} (размер={}) назначен курьеру {} (транспорт={})",
                 order.getId(), order.getSize(), courier.getId(), courier.getTransport());
     }

@@ -8,12 +8,11 @@ import java.util.Random;
 public class AvailableService {
     private final Random random = new Random();
 
-    /**
-     * Вероятность, что получатель будет на месте. Где 0 - никогда, 1 - всегда
-     */
-    private final double availabilityProbability=0.7;
-
     public boolean isRecipientAvailable() {
+        /**
+         * Вероятность, что получатель будет на месте. Где 0 - никогда, 1 - всегда
+         */
+        double availabilityProbability = 0.7;
         return random.nextDouble() < availabilityProbability;
     }
 }

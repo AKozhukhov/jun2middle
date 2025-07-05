@@ -11,8 +11,11 @@ public interface  OrderMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createDate", ignore = true)
+    @Mapping(target = "arrivalTime", ignore = true)
+    @Mapping(target = "courier", ignore = true)
+    @Mapping(target = "status", constant = "NEW")
     Order toEntity(CreateOrderRequest request);
 
-
+    @Mapping(target = "courierId", source = "courier.id")
     OrderResponse toDto(Order order);
 }

@@ -2,6 +2,8 @@ package ru.itone.jun2middle.shop.model.dto.product;
 
 import lombok.Builder;
 import lombok.Value;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Value
@@ -11,5 +13,5 @@ public class ProductDto {
     UUID warehouseId;
     String name;
     int size;
-    double price;
+    BigDecimal price;
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Service
 public class OrderMapper {
 
-    public Order dtoOrderToOrder(OrderDto orderDto) {
+    public Order dtoOrderToNewOrder(OrderDto orderDto) {
         return new Order(
                 null,
                 UUID.fromString(orderDto.getShopOrderId()),
@@ -24,6 +24,7 @@ public class OrderMapper {
                 .id(order.getId())
                 .shopOrderId(order.getShopOrderId())
                 .productId(order.getProductId())
+                .status(order.getStatus())
                 .build();
     }
 

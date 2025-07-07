@@ -3,6 +3,8 @@ package com.example.warehouse.controller;
 import com.example.warehouse.facade.OrderFacade;
 import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,7 @@ public class OrderController {
      * @return CreatedOrderDto
      */
     @PostMapping
-    public CreatedOrderDto reserveOrder(@RequestBody OrderDto orderDto) {
+    public CreatedOrderDto reserveOrder(@Valid @RequestBody OrderDto orderDto) {
         return orderFacade.reserveOrder(orderDto);
     }
 
@@ -36,7 +38,7 @@ public class OrderController {
      * @return CreatedOrderDto
      */
     @DeleteMapping
-    public CreatedOrderDto orderToDeliver(@RequestParam String shopOrderId) {
+    public CreatedOrderDto orderToDeliver(@NotBlank @RequestParam String shopOrderId) {
         return orderFacade.orderToDeliver(shopOrderId);
     }
 

@@ -3,6 +3,7 @@ package com.example.warehouse.controller;
 import com.example.warehouse.facade.ProductFacade;
 import com.example.warehouse.model.dto.CreatedProductDto;
 import com.example.warehouse.model.dto.ProductDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class ProductController {
      * @return CreatedProductDto
      */
     @PostMapping
-    public CreatedProductDto addProduct(@RequestBody ProductDto productDto) {
+    public CreatedProductDto addProduct(@Valid @RequestBody ProductDto productDto) {
         return productFacade.add(productDto);
     }
 

@@ -1,7 +1,5 @@
-CREATE TYPE status_enum AS ENUM ('NEW', 'DELIVERY', 'SUCCESS', 'ERROR');
-
 ALTER TABLE warehouse.orders
-ADD COLUMN status status_enum;
+ADD COLUMN status VARCHAR(10);
 
 UPDATE warehouse.orders
 SET status = 'SUCCESS';

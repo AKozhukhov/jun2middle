@@ -37,9 +37,9 @@ public class OrderFacade {
         }
         product.setCount(product.getCount() - 1);
 
-        Order order = orderMapper.dtoOrderToOrder(orderDto);
-        Order saved = orderService.saveOrder(order);
-        return orderMapper.orderToCreatedOrderDto(saved);
+        Order order = orderMapper.dtoOrderToNewOrder(orderDto);
+        orderService.saveOrder(order);
+        return orderMapper.orderToCreatedOrderDto(order);
     }
 
     public CreatedOrderDto orderToDeliver(String shopOrderId) {

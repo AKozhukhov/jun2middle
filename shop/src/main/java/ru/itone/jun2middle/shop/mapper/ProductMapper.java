@@ -1,7 +1,6 @@
 package ru.itone.jun2middle.shop.mapper;
 
 import org.springframework.stereotype.Service;
-import ru.itone.jun2middle.shop.model.dto.product.CreatedProductDto;
 import ru.itone.jun2middle.shop.model.dto.product.ProductDto;
 import ru.itone.jun2middle.shop.model.entity.Product;
 
@@ -19,24 +18,26 @@ public class ProductMapper {
      */
     public Product toEntity(ProductDto productDto) {
         return new Product(
-                null,
+                productDto.getId(),
                 productDto.getWarehouseId(),
                 productDto.getName(),
-                productDto.getSize());
+                productDto.getSize(),
+                productDto.getPrice());
     }
 
     /**
-     * Преобразование Product в CreatedProductDto
+     * Преобразование Product в ProductDto
      *
      * @param product Product (Entity)
-     * @return Объект CreatedProductDto
+     * @return Объект ProductDto
      */
-    public CreatedProductDto toCreatedDto(Product product) {
-        return CreatedProductDto.builder()
+    public ProductDto toDto(Product product) {
+        return ProductDto.builder()
                 .id(product.getId())
                 .warehouseId(product.getWarehouseId())
                 .name(product.getName())
                 .size(product.getSize())
+                .price(product.getPrice())
                 .build();
     }
 }

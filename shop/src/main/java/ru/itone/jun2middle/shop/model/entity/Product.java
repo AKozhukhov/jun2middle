@@ -28,4 +28,7 @@ public class Product {
 
     @Column(name="size")
     private int size;
+
+    @Column(name="price")
+    private double price;
 }

@@ -1,0 +1,2 @@
+ALTER TABLE shop.products
+ADD COLUMN price DECIMAL(15,2);

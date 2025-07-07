@@ -5,19 +5,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.itone.jun2middle.shop.facade.UserFacade;
-import ru.itone.jun2middle.shop.model.dto.user.CreatedUserDto;
-import ru.itone.jun2middle.shop.model.dto.user.UserDto;
+import ru.itone.jun2middle.shop.facade.ProductFacade;
+import ru.itone.jun2middle.shop.model.dto.product.ProductDto;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("api/v1/products")
 @RequiredArgsConstructor
-public class UserController {
-
-    private final UserFacade userFacade;
+public class ProductController {
+    private final ProductFacade productFacade;
 
     @PostMapping
-    public CreatedUserDto create(@RequestBody UserDto userDto) {
-        return userFacade.create(userDto);
+    public ProductDto create(@RequestBody ProductDto productDto) {
+        return productFacade.create(productDto);
     }
 }

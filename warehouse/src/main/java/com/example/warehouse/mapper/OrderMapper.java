@@ -3,6 +3,7 @@ package com.example.warehouse.mapper;
 import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
 import com.example.warehouse.model.entity.Order;
+import com.example.warehouse.model.entity.Status;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,7 +15,8 @@ public class OrderMapper {
         return new Order(
                 null,
                 UUID.fromString(orderDto.getShopOrderId()),
-                UUID.fromString(orderDto.getProductId()));
+                UUID.fromString(orderDto.getProductId()),
+                Status.NEW);
     }
 
     public CreatedOrderDto orderToCreatedOrderDto(Order order) {

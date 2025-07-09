@@ -6,6 +6,7 @@ import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
 import com.example.warehouse.model.entity.Order;
 import com.example.warehouse.model.entity.Product;
+import com.example.warehouse.model.entity.Status;
 import com.example.warehouse.service.OrderService;
 import com.example.warehouse.service.ProductService;
 import jakarta.transaction.Transactional;
@@ -27,13 +28,14 @@ public class OrderFacade {
 
     @Transactional
     public CreatedOrderDto reserveOrder(OrderDto orderDto) {
-        Optional<Product> optionalProduct = productService.findById(UUID.fromString(orderDto.getProductId()));
+        UUID productId = UUID.fromString(orderDto.getProductId());
+        Optional<Product> optionalProduct = productService.findById(productId);
         if (optionalProduct.isEmpty()) {
-            throw new OrderException("Unknown product");
+            throw new OrderException("Unknown product by productId = %s".formatted(productId));
         }
         Product product = optionalProduct.get();
         if (product.getCount() == 0) {
-            throw new OrderException("The product is out of stock");
+            throw new OrderException("The product is out of stock, productId = %s".formatted(productId));
         }
         product.setCount(product.getCount() - 1);
 
@@ -42,8 +44,21 @@ public class OrderFacade {
         return orderMapper.orderToCreatedOrderDto(order);
     }
 
-    public CreatedOrderDto orderToDeliver(String shopOrderId) {
-        Order delivered = orderService.orderToDeliver(UUID.fromString(shopOrderId));
-        return orderMapper.orderToCreatedOrderDto(delivered);
+    public CreatedOrderDto orderToDelivery(String shopOrderId) {
+        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.DELIVERY);
+        return orderMapper.orderToCreatedOrderDto(order);
+    }
+
+    public CreatedOrderDto orderToSuccess(String shopOrderId) {
+        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.SUCCESS);
+        return orderMapper.orderToCreatedOrderDto(order);
+    }
+
+    @Transactional
+    public CreatedOrderDto orderToError(String shopOrderId) {
+        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.ERROR);
+        Product product = productService.findById(order.getProductId()).get();
+        product.setCount(product.getCount() + 1);
+        return orderMapper.orderToCreatedOrderDto(order);
     }
 }

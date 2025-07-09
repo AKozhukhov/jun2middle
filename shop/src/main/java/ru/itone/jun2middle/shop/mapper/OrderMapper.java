@@ -8,6 +8,7 @@ import ru.itone.jun2middle.shop.model.dto.order.OrderDto;
 import ru.itone.jun2middle.shop.model.dto.order.ReserveOrderRequest;
 import ru.itone.jun2middle.shop.model.entity.Order;
 import ru.itone.jun2middle.shop.model.entity.User;
+import ru.itone.jun2middle.shop.model.entity.enums.Status;
 import ru.itone.jun2middle.shop.service.ProductService;
 import ru.itone.jun2middle.shop.service.UserService;
 
@@ -31,7 +32,9 @@ public class OrderMapper {
         return new Order(
                 null,
                 orderDto.getProductId(),
-                orderDto.getUserId());
+                orderDto.getUserId(),
+                Status.NEW,
+                null);
     }
 
     /**
@@ -45,6 +48,8 @@ public class OrderMapper {
                 .id(order.getId())
                 .productId(order.getProductId())
                 .userId(order.getUserId())
+                .status(order.getStatus())
+                .description(order.getDescription())
                 .build();
     }
 

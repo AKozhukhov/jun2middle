@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 import lombok.*;
+import ru.itone.jun2middle.shop.model.entity.enums.Status;
 
 @Getter
 @Setter
@@ -22,4 +23,11 @@ public class Order {
 
     @Column(name="user_id")
     private UUID userId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="status", columnDefinition="order_status")
+    private Status status;
+
+    @Column(name="description")
+    private String description;
 }

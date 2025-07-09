@@ -3,6 +3,7 @@ package ru.itone.jun2middle.shop.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itone.jun2middle.shop.model.entity.Order;
+import ru.itone.jun2middle.shop.model.entity.Product;
 import ru.itone.jun2middle.shop.model.entity.enums.Status;
 import ru.itone.jun2middle.shop.repository.OrderRepository;
 import ru.itone.jun2middle.shop.repository.ProductRepository;
@@ -34,6 +35,13 @@ public class OrderService {
             throw new RuntimeException("user_id не должен быть пустым");
         } else if (!userRepository.existsById(order.getUserId())) {
             throw new RuntimeException("Пользователь с указанным user_id не существует");
+        }
+        Optional<Product> optionalProduct = productRepository.findById(order.getProductId());
+        if(optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            if(product.getPrice()==null) {
+                throw new RuntimeException("Невозможно создать заказ с неоценённым товаром");
+            }
         }
         return orderRepository.save(order);
     }

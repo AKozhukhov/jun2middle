@@ -3,6 +3,7 @@ package com.example.delivery.facade;
 import com.example.delivery.dto.CreateOrderRequest;
 import com.example.delivery.dto.OrderResponse;
 import com.example.delivery.entity.Order;
+import com.example.delivery.entity.enums.OrderStatus;
 import com.example.delivery.mapper.OrderMapper;
 import com.example.delivery.service.OrderService;
 import org.junit.jupiter.api.Assertions;
@@ -63,7 +64,10 @@ public class OrderFacadeTest {
                 2,
                 100,
                 200,
-                createDate
+                createDate,
+                OrderStatus.NEW,
+                null,
+                null
         );
 
         when(orderMapper.toEntity(request)).thenReturn(entity);
@@ -77,6 +81,7 @@ public class OrderFacadeTest {
         Assertions.assertEquals(shopOrderId, actualResponse.shopOrderId());
         Assertions.assertEquals(2, actualResponse.size());
         Assertions.assertEquals(createDate, actualResponse.createDate());
+        Assertions.assertEquals(OrderStatus.NEW, actualResponse.status());
         Assertions.assertEquals(100, actualResponse.locationX());
         Assertions.assertEquals(200, actualResponse.locationY());
 

@@ -2,6 +2,7 @@ package com.example.delivery.service;
 
 
 import com.example.delivery.entity.Order;
+import com.example.delivery.entity.enums.OrderStatus;
 import com.example.delivery.repository.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,6 +36,7 @@ class OrderServiceTest {
         Assertions.assertEquals(order.getId(), result.getId());
         Assertions.assertEquals(order.getShopOrderId(), result.getShopOrderId());
         Assertions.assertEquals(order.getSize(), result.getSize());
+        Assertions.assertEquals(order.getStatus(), result.getStatus());
         verify(orderRepository, times(1)).save(order);
     }
 
@@ -46,6 +48,7 @@ class OrderServiceTest {
         order.setCreateDate(LocalDateTime.now());
         order.setLocationX(100);
         order.setLocationY(200);
+        order.setStatus(OrderStatus.NEW);
         return order;
     }
 }

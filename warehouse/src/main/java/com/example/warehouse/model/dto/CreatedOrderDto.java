@@ -1,5 +1,6 @@
 package com.example.warehouse.model.dto;
 
+import com.example.warehouse.model.entity.Status;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,5 +15,7 @@ public class CreatedOrderDto {
     UUID shopOrderId;
 
     UUID productId;
+
+    Status status;
 
 }

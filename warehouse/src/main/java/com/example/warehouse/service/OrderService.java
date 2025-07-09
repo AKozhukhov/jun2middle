@@ -16,8 +16,8 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
+    public void saveOrder(Order order) {
+        orderRepository.save(order);
     }
 
     @Transactional

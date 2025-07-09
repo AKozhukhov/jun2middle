@@ -2,6 +2,8 @@ package ru.itone.jun2middle.shop.facade;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -11,7 +13,10 @@ import ru.itone.jun2middle.shop.model.dto.order.DeliveryOrderRequest;
 import ru.itone.jun2middle.shop.model.dto.order.OrderDto;
 import ru.itone.jun2middle.shop.model.dto.order.ReserveOrderRequest;
 import ru.itone.jun2middle.shop.model.entity.Order;
+import ru.itone.jun2middle.shop.model.entity.enums.Status;
 import ru.itone.jun2middle.shop.service.OrderService;
+
+import java.nio.channels.ClosedChannelException;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +25,10 @@ public class OrderFacade {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    private final String warehouseURL = "http://127.0.0.1:7055/api/v1/order";
-    private final String deliveryURL = "http://127.0.0.1:7050/api/v1/orders";
+    @Value("${shop.orders.warehouse_url}")
+    private String warehouseURL;
+    @Value("${shop.orders.delivery_url}")
+    private String deliveryURL;
 
     /**
      * Создание заказа
@@ -37,32 +44,37 @@ public class OrderFacade {
         ReserveOrderRequest reserveOrderRequest = orderMapper.toReserveOrderRequest(createdOrder);
         RestClient restClient = RestClient.create();
 
-        ResponseEntity<Void> response = restClient.post()
-                .uri(warehouseURL)
-                .body(reserveOrderRequest)
-                .retrieve()
-                .toBodilessEntity();
-        if (response.getStatusCode().is2xxSuccessful()) {
-            DeliveryOrderRequest deliveryOrderRequest = orderMapper.toDeliveryOrderRequest(createdOrder);
-            response = restClient.post()
-                    .uri(deliveryURL)
-                    .body(deliveryOrderRequest)
+        try {
+            ResponseEntity<Void> response = restClient.post()
+                    .uri(warehouseURL)
+                    .body(reserveOrderRequest)
                     .retrieve()
+                    .onStatus(HttpStatusCode::isError,(req,resp)->{
+                        orderService.setError(createdOrder,"Ошибка резервации заказа на складе");
+                    })
                     .toBodilessEntity();
 
-            if (response.getStatusCode().is2xxSuccessful()) {
-                return orderMapper.toCreatedDto(createdOrder);
+            try {
+                orderService.changeStatus(createdOrder, Status.DELIVERY);
+                DeliveryOrderRequest deliveryOrderRequest = orderMapper.toDeliveryOrderRequest(createdOrder);
+                response = restClient.post()
+                        .uri(deliveryURL)
+                        .body(deliveryOrderRequest)
+                        .retrieve()
+                        .onStatus(HttpStatusCode::isError, (req, resp) -> {
+                            orderService.setError(createdOrder, "Ошибка при передаче заказа службе доставки");
+                        })
+                        .toBodilessEntity();
+                orderService.changeStatus(createdOrder,Status.SUCCESS);
+            } catch (RuntimeException e) {
+                orderService.setError(createdOrder,"Ошибка при попытке соединения со службой доставки");
             }
-            else {
-                orderService.delete(createdOrder);
-                throw new RuntimeException("Ошибка запроса в службу доставки");
-            }
+
         }
-        else {
-            orderService.delete(createdOrder);
-            throw new RuntimeException("Ошибка резервации заказа на складе");
+        catch (RuntimeException e) {
+            orderService.setError(createdOrder,"Ошибка при попытке соединения со складом");
         }
+
+        return orderMapper.toCreatedDto(createdOrder);
     }
-
-
 }

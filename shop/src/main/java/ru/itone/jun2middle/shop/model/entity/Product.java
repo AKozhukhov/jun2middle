@@ -1,6 +1,8 @@
 package ru.itone.jun2middle.shop.model.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import lombok.AllArgsConstructor;
@@ -29,5 +31,5 @@ public class Product {
     private int size;
 
     @Column(name="price")
-    private double price;
+    private BigDecimal price;
 }

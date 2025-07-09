@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
      *
      * @return long, количество
      */
-    @Query("SELECT SUM(p.count) FROM Product p")
+    @Query("SELECT SUM(p.count * p.size) FROM Product p")
     long productsNumber();
 
 }

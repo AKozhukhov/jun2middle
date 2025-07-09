@@ -21,11 +21,13 @@ public interface OrderRepository extends JpaRepository<Order, UUID> {
 
 
     /**
-     * Найти количество заказов со статусами 'NEW', 'DELIVERY'.
+     * Найти количество продукта в заказах со статусами 'NEW', 'DELIVERY'.
      *
      * @return long, количество
      */
-    @Query("SELECT COUNT(*) FROM Order o WHERE o.status = 'NEW' OR o.status = 'DELIVERY'")
+    @Query("SELECT SUM(p.size) FROM Product p " +
+            "JOIN Order o ON p.id = o.productId " +
+            "WHERE o.status = 'NEW' OR o.status = 'DELIVERY'")
     long ordersInDelivery();
 
 }

@@ -21,4 +21,8 @@ public class ProductService {
         }
         return optionalProduct.get().getSize();
     }
+
+    public Product create(Product product) {
+            return productRepository.save(product);
+    }
 }

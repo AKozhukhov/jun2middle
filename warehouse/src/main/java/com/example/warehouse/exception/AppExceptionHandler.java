@@ -20,6 +20,13 @@ public class AppExceptionHandler {
                 .body(exception.getMessage());
     }
 
+    @ExceptionHandler({ProductException.class})
+    public ResponseEntity<String> handleProductException(ProductException exception) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(exception.getMessage());
+    }
+
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<String> handleArgumentNotValidException(MethodArgumentNotValidException exception) {
         String message = exception.getBindingResult()

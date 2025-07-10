@@ -4,7 +4,7 @@ import com.example.warehouse.facade.OrderFacade;
 import com.example.warehouse.model.dto.CreatedOrderDto;
 import com.example.warehouse.model.dto.OrderDto;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -38,7 +40,7 @@ public class OrderController {
      * @return CreatedOrderDto
      */
     @PutMapping("/delivery")
-    public CreatedOrderDto orderToDelivery(@NotBlank @RequestParam String shopOrderId) {
+    public CreatedOrderDto orderToDelivery(@NotNull @RequestParam UUID shopOrderId) {
         return orderFacade.orderToDelivery(shopOrderId);
     }
 
@@ -48,7 +50,7 @@ public class OrderController {
      * @return CreatedOrderDto
      */
     @PutMapping("/success")
-    public CreatedOrderDto orderToSuccess(@NotBlank @RequestParam String shopOrderId) {
+    public CreatedOrderDto orderToSuccess(@NotNull @RequestParam UUID shopOrderId) {
         return orderFacade.orderToSuccess(shopOrderId);
     }
 
@@ -58,7 +60,7 @@ public class OrderController {
      * @return CreatedOrderDto
      */
     @PutMapping("/error")
-    public CreatedOrderDto orderToError(@NotBlank @RequestParam String shopOrderId) {
+    public CreatedOrderDto orderToError(@NotNull @RequestParam UUID shopOrderId) {
         return orderFacade.orderToError(shopOrderId);
     }
 

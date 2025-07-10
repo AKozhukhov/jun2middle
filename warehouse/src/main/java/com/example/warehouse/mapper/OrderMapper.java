@@ -14,8 +14,8 @@ public class OrderMapper {
     public Order dtoOrderToNewOrder(OrderDto orderDto) {
         return new Order(
                 null,
-                UUID.fromString(orderDto.getShopOrderId()),
-                UUID.fromString(orderDto.getProductId()),
+                orderDto.getShopOrderId(),
+                orderDto.getProductId(),
                 Status.NEW);
     }
 

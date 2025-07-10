@@ -4,9 +4,9 @@ import com.example.warehouse.exception.OrderException;
 import com.example.warehouse.model.entity.Order;
 import com.example.warehouse.model.entity.Status;
 import com.example.warehouse.repository.OrderRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -43,7 +43,6 @@ public class OrderService {
         if (newStatus == Status.ERROR && oldStatus != Status.DELIVERY) {
             throw new OrderException("Error setStatus: %s -> %s".formatted(oldStatus, newStatus));
         }
-
     }
 
 }

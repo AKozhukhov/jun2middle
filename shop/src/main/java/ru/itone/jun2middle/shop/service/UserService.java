@@ -2,6 +2,7 @@ package ru.itone.jun2middle.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.itone.jun2middle.shop.exception.UserNotFoundException;
 import ru.itone.jun2middle.shop.model.entity.User;
 import ru.itone.jun2middle.shop.repository.UserRepository;
 
@@ -29,7 +30,7 @@ public class UserService {
     public User getUserById(UUID id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isEmpty()) {
-            throw new RuntimeException("Пользователь не найден");
+            throw new UserNotFoundException("Пользователь с указанным ID не найден");
         }
         return optionalUser.get();
     }

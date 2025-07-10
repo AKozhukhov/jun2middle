@@ -2,6 +2,7 @@ package ru.itone.jun2middle.shop.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.itone.jun2middle.shop.exception.ProductNotFoundException;
 import ru.itone.jun2middle.shop.model.entity.Product;
 import ru.itone.jun2middle.shop.repository.ProductRepository;
 
@@ -25,7 +26,7 @@ public class ProductService {
     public int getSizeById(UUID id){
         Optional<Product> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isEmpty()) {
-            throw new RuntimeException("Продукт не найден");
+            throw new ProductNotFoundException("Продукт с указанным ID не найден");
         }
         return optionalProduct.get().getSize();
     }
@@ -59,7 +60,7 @@ public class ProductService {
     public Product setPrice(UUID id, BigDecimal price) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         if(optionalProduct.isEmpty()) {
-            throw new RuntimeException("Продукт с таким ID не существует");
+            throw new ProductNotFoundException("Продукт с указанным ID не найден");
         }
         else {
             Product product = optionalProduct.get();

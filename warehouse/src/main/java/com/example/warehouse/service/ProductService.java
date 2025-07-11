@@ -2,7 +2,6 @@ package com.example.warehouse.service;
 
 import com.example.warehouse.model.entity.Product;
 import com.example.warehouse.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class ProductService {
         return productRepository.findById(productId);
     }
 
-    @Transactional
     public Product add(Product product){
         Optional<Product> optionalProduct = productRepository.findByName(product.getName());
         if (optionalProduct.isPresent()) {

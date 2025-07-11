@@ -9,9 +9,9 @@ import com.example.warehouse.model.entity.Product;
 import com.example.warehouse.model.entity.Status;
 import com.example.warehouse.service.OrderService;
 import com.example.warehouse.service.ProductService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +28,7 @@ public class OrderFacade {
 
     @Transactional
     public CreatedOrderDto reserveOrder(OrderDto orderDto) {
-        UUID productId = UUID.fromString(orderDto.getProductId());
+        UUID productId = orderDto.getProductId();
         Optional<Product> optionalProduct = productService.findById(productId);
         if (optionalProduct.isEmpty()) {
             throw new OrderException("Unknown product by productId = %s".formatted(productId));
@@ -44,19 +44,19 @@ public class OrderFacade {
         return orderMapper.orderToCreatedOrderDto(order);
     }
 
-    public CreatedOrderDto orderToDelivery(String shopOrderId) {
-        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.DELIVERY);
+    public CreatedOrderDto orderToDelivery(UUID shopOrderId) {
+        Order order = orderService.setStatus(shopOrderId, Status.DELIVERY);
         return orderMapper.orderToCreatedOrderDto(order);
     }
 
-    public CreatedOrderDto orderToSuccess(String shopOrderId) {
-        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.SUCCESS);
+    public CreatedOrderDto orderToSuccess(UUID shopOrderId) {
+        Order order = orderService.setStatus(shopOrderId, Status.SUCCESS);
         return orderMapper.orderToCreatedOrderDto(order);
     }
 
     @Transactional
-    public CreatedOrderDto orderToError(String shopOrderId) {
-        Order order = orderService.setStatus(UUID.fromString(shopOrderId), Status.ERROR);
+    public CreatedOrderDto orderToError(UUID shopOrderId) {
+        Order order = orderService.setStatus(shopOrderId, Status.ERROR);
         Product product = productService.findById(order.getProductId()).get();
         product.setCount(product.getCount() + 1);
         return orderMapper.orderToCreatedOrderDto(order);

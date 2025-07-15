@@ -6,16 +6,14 @@ import com.example.warehouse.model.entity.Order;
 import com.example.warehouse.model.entity.Status;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
 public class OrderMapper {
 
     public Order dtoOrderToNewOrder(OrderDto orderDto) {
         return new Order(
                 null,
-                UUID.fromString(orderDto.getShopOrderId()),
-                UUID.fromString(orderDto.getProductId()),
+                orderDto.getShopOrderId(),
+                orderDto.getProductId(),
                 Status.NEW);
     }
 

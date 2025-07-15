@@ -10,6 +10,8 @@
     <description>Spring Boot project</description>
     <modules>
         <module>delivery</module>
+        <module>shop</module>
+        <module>warehouse</module>
     </modules>
     <url/>
     <licenses>

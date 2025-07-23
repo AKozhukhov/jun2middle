@@ -2,6 +2,7 @@ package com.example.warehouse.mapper;
 
 import com.example.warehouse.model.dto.CreatedProductDto;
 import com.example.warehouse.model.dto.ProductDto;
+import com.example.warehouse.model.dto.ShopProductRequest;
 import com.example.warehouse.model.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,14 @@ public class ProductMapper {
                 .name(product.getName())
                 .size(product.getSize())
                 .count(product.getCount())
+                .build();
+    }
+
+    public ShopProductRequest createdProductDtoToShopProductRequest(CreatedProductDto createdProductDto) {
+        return ShopProductRequest.builder()
+                .warehouseId(createdProductDto.getId())
+                .name(createdProductDto.getName())
+                .size(createdProductDto.getSize())
                 .build();
     }
 

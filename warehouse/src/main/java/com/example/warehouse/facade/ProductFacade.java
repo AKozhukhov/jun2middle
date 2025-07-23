@@ -1,6 +1,6 @@
 package com.example.warehouse.facade;
 
-import com.example.warehouse.client.ShopClient;
+import com.example.warehouse.client.ShopClientSender;
 import com.example.warehouse.exception.ProductException;
 import com.example.warehouse.mapper.ProductMapper;
 import com.example.warehouse.model.dto.CreatedProductDto;
@@ -24,7 +24,7 @@ public class ProductFacade {
 
     private final FillingService fillingService;
 
-    private final ShopClient shopClient;
+    private final ShopClientSender shopClientSender;
 
     public List<CreatedProductDto> findAll() {
         return productService.findAll().stream()
@@ -35,12 +35,12 @@ public class ProductFacade {
     @Transactional
     public CreatedProductDto add(ProductDto productDto) {
         long freeSpace = fillingService.freeSpaceInWarehouse();
-        if (freeSpace < productDto.getCount()) {
+        if (freeSpace < (productDto.getCount() * productDto.getSize())) {
             throw new ProductException("No free space in warehouse");
         }
         Product product = productService.add(productMapper.dtoProductToProduct(productDto));
         CreatedProductDto createdProductDto = productMapper.productToCreatedProductDto(product);
-        shopClient.sendProduct(createdProductDto);
+        shopClientSender.sendProduct(createdProductDto);
         return createdProductDto;
     }
 

@@ -1,0 +1,24 @@
+server.port: 7055
+
+spring:
+  application:
+    name: warehouse
+  datasource:
+    url: jdbc:postgresql://localhost:5432/warehouse?ApplicationName=warehouse
+    username: postgres
+    password: 1234
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS warehouse
+      schema: warehouse
+      connection-timeout: 10000
+  jpa:
+    properties.hibernate.default_schema: warehouse
+    show-sql: true
+
+app:
+  full_filling_warehouse: 1000
+  integration:
+    shop-base-url: http://localhost:7044
+    delivery-base-url: http://localhost:7050
+
+#logging.level.root: DEBUG

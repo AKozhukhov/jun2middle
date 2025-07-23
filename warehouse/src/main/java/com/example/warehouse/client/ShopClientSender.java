@@ -1,36 +1,34 @@
 package com.example.warehouse.client;
 
 import com.example.warehouse.exception.ProductException;
+import com.example.warehouse.mapper.ProductMapper;
 import com.example.warehouse.model.dto.CreatedProductDto;
 import com.example.warehouse.model.dto.ShopProductRequest;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
 @Service
-public class ShopClient {
+@RequiredArgsConstructor
+public class ShopClientSender {
 
-    @Value("${app.integration.shop-base-url}")
-    private String shopBaseUrl;
+    private final ProductMapper productMapper;
 
-    public void sendProduct(CreatedProductDto createdProductDto) {
-        RestClient restClient = RestClient.create(shopBaseUrl);
-        ShopProductRequest shopProductRequest = ShopProductRequest.builder()
-                .warehouseId(createdProductDto.getId())
-                .name(createdProductDto.getName())
-                .size(createdProductDto.getSize())
-                .build();
+    private final RestClient shopRestClient;
+
+    public CreatedProductDto sendProduct(CreatedProductDto createdProductDto) {
         try {
-            restClient.post()
+            shopRestClient.post()
                     .uri("/api/v1/products")
-                    .body(shopProductRequest)
+                    .body(productMapper.createdProductDtoToShopProductRequest(createdProductDto))
                     .retrieve()
                     .toEntity(ShopProductRequest.class);
         } catch (HttpServerErrorException | HttpClientErrorException e){
             throw new ProductException("Bad request to Shop. Product name = %s".formatted(createdProductDto.getName()));
         }
+        return createdProductDto;
     }
 
 }

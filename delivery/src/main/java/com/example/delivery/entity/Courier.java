@@ -39,4 +39,11 @@ public class Courier {
 
     @Column(name = "busy_until")
     private LocalDateTime busyUntil;
+
+
+
+    public void clearDelivery(){
+        busy=false;
+        busyUntil=null;
+    }
 }
